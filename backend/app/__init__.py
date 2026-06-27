@@ -16,7 +16,12 @@ def create_app():
     db.init_app(app)
     jwt.init_app(app)
     bcrypt.init_app(app)
-    CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+
+    CORS(app, resources={r"/api/*": {"origins": [
+        "http://localhost:5173",
+        "https://devboard-frontend.vercel.app",  # update after Vercel deploy
+        "https://*.vercel.app",                  # allows all Vercel preview URLs
+    ]}})
 
     from app.models import User, Project, Task, Note
 
@@ -29,5 +34,9 @@ def create_app():
     app.register_blueprint(projects_bp, url_prefix='/api/projects')
     app.register_blueprint(tasks_bp, url_prefix='/api/projects/<int:project_id>/tasks')
     app.register_blueprint(notes_bp, url_prefix='/api/tasks/<int:task_id>/notes')
+
+    @app.route('/')
+    def health():
+        return {'status': 'DevBoard API is running'}, 200
 
     return app
