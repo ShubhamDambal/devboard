@@ -19,8 +19,8 @@ def create_app():
 
     CORS(app, resources={r"/api/*": {"origins": [
         "http://localhost:5173",
-        "https://devboard-frontend.vercel.app",  # update after Vercel deploy
-        "https://*.vercel.app",                  # allows all Vercel preview URLs
+        "https://devboard-iota-ashen.vercel.app",
+        "https://*.vercel.app",
     ]}})
 
     from app.models import User, Project, Task, Note
